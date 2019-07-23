@@ -34,7 +34,7 @@
         direction="up"
         color="accent"
       >
-        <q-fab-action @click="jobFormShow=true" color="primary" icon="library_add" />
+        <q-fab-action to="/adviser/orders/create" color="primary" icon="library_add" />
       </q-fab>
     </q-page-sticky>
   </q-page>
@@ -50,7 +50,7 @@ export default {
   name: 'MainDashboard',
   data () {
     return {
-      jobFormShow: false
+
     }
   },
   computed: {

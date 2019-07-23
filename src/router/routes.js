@@ -44,6 +44,24 @@ const routes = [
     children: [
       { path: ':operation', props: true, component: () => import('pages/Job.vue') }
     ]
+  },
+  // user centric operations
+  {
+    path: '/adviser/orders',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Jobs.vue') },
+      { path: ':operation', props: true, component: () => import('pages/Order.vue') }
+    ]
+  },
+  {
+    path: '/adviser/order/:id/',
+    name: 'order',
+    props: true,
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: ':operation', props: true, component: () => import('pages/Order.vue') }
+    ]
   }
 ]
 
