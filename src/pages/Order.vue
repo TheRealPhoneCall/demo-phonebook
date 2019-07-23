@@ -1,10 +1,10 @@
 <template>
-  <q-page padding>
+  <q-page padding class="row">
     <!-- content -->
     <q-form
       ref="orderForm"
       @submit="onSubmit"
-      class="q-gutter-md"
+      class="q-gutter-md col-md-10"
     >
       <q-card>
         <q-card-section class="row items-center">
@@ -59,6 +59,33 @@
       </q-card>
       
     </q-form>
+    <div class="col-md-2">
+      <q-list>
+        <q-item clickable v-ripple>
+          <q-item-section>
+            <q-item-label>SoA Details</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple>
+          <q-item-section>
+            <q-item-label>Risk Profile</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple>
+          <q-item-section>
+            <q-item-label>Scope of Advice</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple>
+          <q-item-section>
+            <q-item-label>Strategies</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </div>
   </q-page>
 </template>
 
