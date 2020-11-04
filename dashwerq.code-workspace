@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../24_revybe/revybe-quasar"
+		},
+		{
+			"path": "../../05_soamgr/v2-0/soamgr-quasar-django"
+		}
+	],
+	"settings": {}
+}
