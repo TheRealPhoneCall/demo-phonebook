@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "../../05_soamgr/v2-0/soamgr-quasar-django"
+		},
+		{
+			"path": "../dashwerq-cli"
 		}
 	],
 	"settings": {}
