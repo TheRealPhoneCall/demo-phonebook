@@ -1,8 +1,8 @@
 {
-  "name": "dashwerks-vue-quasar",
+  "name": "dashwerq-quasar",
   "version": "0.0.1",
   "description": "A platform builder for niche jobs",
-  "productName": "dashwerks",
+  "productName": "dashwerq",
   "cordovaId": "org.cordova.quasar.app",
   "author": "Daryl Pongcol <pongcoldaryl@gmail.com>",
   "private": true,

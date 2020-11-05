@@ -1,4 +1,4 @@
-# dashwerks (dashwerks-vue-quasar)
+# dashwerq (dashwerq-quasar)
 
 A platform builder for niche jobs
 
