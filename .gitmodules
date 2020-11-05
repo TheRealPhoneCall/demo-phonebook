@@ -1,3 +1,7 @@
+[submodule "cli"]
+	path = cli
+	url = https://DrealPhoneCall@bitbucket.org/DrealPhoneCall/dashwerq-cli.git
+
 [submodule "src/libraries"]
 	path = src/libraries
 	url = https://DrealPhoneCall@bitbucket.org/DrealPhoneCall/dashwerq-libraries.git
