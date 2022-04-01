@@ -142,6 +142,12 @@ export const localColDocs = {
     setDoc (state, payload) {
       state.doc = payload
     },
+    setDocField (state, payload) {
+      state.doc = {
+        ...state.doc,
+        [payload.field]: payload.value
+      }
+    },
     setColName (state, payload) {
       state.colName = payload
     }

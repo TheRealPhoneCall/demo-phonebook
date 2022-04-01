@@ -2,8 +2,8 @@
   <q-page class="flex" padding>
     <div class="row q-col-gutter-md">
       <div
-        v-for="job in contacts"
-        :key="job.id"
+        v-for="contact in contacts"
+        :key="contact.id"
         class="col-xs-12 col-sm-6 col-md-3"
 
       >

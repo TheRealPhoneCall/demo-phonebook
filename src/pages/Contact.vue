@@ -14,7 +14,7 @@
         <q-card-section>
           <q-input
             filled
-            :value="firstName"
+            v-model="firstName"
             debounce="500"
             label="First name"
             lazy-rules
@@ -23,7 +23,7 @@
 
           <q-input
             filled
-            :value="lastName"
+            v-model="lastName"
             debounce="500"
             label="Last name"
             lazy-rules
@@ -32,7 +32,7 @@
 
           <q-input
             filled
-            :value="phoneNumber"
+            v-model="phoneNumber"
             debounce="500"
             label="Phone number"
             lazy-rules
@@ -68,7 +68,6 @@
 </template>
 
 <script>
-import uuidv4 from 'uuid/v4'
 import {
   mapActions,
   mapGetters,
@@ -104,7 +103,7 @@ export default {
       set (value) {
         this.setDoc({
           ...this.contact,
-          title: value
+          firstName: value
         })
       }
     },
@@ -149,7 +148,7 @@ export default {
     ...mapActions('contacts', ['createDoc', 'retrieveDoc', 'updateDoc', 'deleteDoc']),
     ...mapMutations('contacts', ['setDoc', 'setLoading']),
     async onSubmit () {
-      console.log('Adding contact: ', this.title, this.desc, this.id)
+      console.log(`Submitting contact: `, this.contact)
 
       const payload = {
         id: this.id,
@@ -187,7 +186,7 @@ export default {
     switch (this.operation) {
       case 'create':
         console.log('create mode')
-        this.setDoc({ id: uuidv4(), firstName: '', lastName: '', phoneNumber: '', isFavorite: false, created: new Date() })
+        this.setDoc({ firstName: '', lastName: '', phoneNumber: '', isFavorite: false, created: new Date() })
         break
       case 'edit':
       case 'delete':
@@ -195,6 +194,8 @@ export default {
         this.retrieveDoc(this.id)
         break
     }
+
+    console.log('@created contact =', this.contact)
   }
 }
 </script>

@@ -6,10 +6,10 @@ export const db = {
   collection: (colName) => ({
     get: () => {
       return new Promise(async (resolve, reject) => {
-        const collection = localStorage.getItem(colName)
+        const collection = JSON.parse(localStorage.getItem(colName))
         console.log('collection: ', collection)
         if (collection && collection.isCollection) {
-          resolve(collection)
+          resolve(collection.docs)
         } else {
           reject('Collection not found')
         }
@@ -33,7 +33,7 @@ export const db = {
       return new Promise(async (resolve, reject) => {
         if (typeof doc === 'object' && !Array.isArray(doc) && doc !== null) {
           // must be a valid doc (object, not array and null)
-          const collection = localStorage.getItem(colName)
+          const collection = JSON.parse(localStorage.getItem(colName))
           console.log('collection: ', collection)
           if (collection && collection.isCollection) {
             try {
@@ -43,13 +43,15 @@ export const db = {
                   if (collection.docs.find(t => t.id === doc.id)) {
                     reject('ID already present in the collection')
                   }
-                  localStorage.setItem(colName, { ...collection, docs: [ ...collection.docs, doc ] })
+                  const value = JSON.stringify({ ...collection, docs: [ ...collection.docs, doc ] })
+                  localStorage.setItem(colName, value)
                   resolve(doc)
                 } else {
                   console.log('id already present in the collection')
-                  const docs = [ ...collection.docs, { id: uuidv4(), ...doc } ]
-                  localStorage.setItem(colName, { ...collection, docs })
-                  resolve(doc)
+                  const newDoc = { id: uuidv4(), ...doc }
+                  const value = JSON.stringify({ ...collection, docs: [ ...collection.docs, newDoc ] })
+                  localStorage.setItem(colName, value)
+                  resolve(newDoc)
                 }
               } else {
                 reject('Invalid document addition')
@@ -59,7 +61,8 @@ export const db = {
             }
           } else {
             // collection doesnt exist, create it
-            localStorage.setItem(colName, { isCollection: true, docs: [ doc ] })
+            const value = JSON.stringify({ isCollection: true, docs: [ doc ] })
+            localStorage.setItem(colName, value)
             resolve(doc)
           }
         }

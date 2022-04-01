@@ -16,11 +16,9 @@ export default {
     ...loading.actions,
     ...localColDocs.actions,
     initAndWatchContacts ({ commit, dispatch }) {
-      commit('setColName', 'contacts')
       dispatch('initAndWatchCol')
     },
     retrieveAllContacts ({ commit, dispatch }) {
-      commit('setColName', 'contacts')
       dispatch('retrieveAllDocs')
     }
   },
