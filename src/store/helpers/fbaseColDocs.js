@@ -8,7 +8,6 @@ export const fbaseColDocs = {
     doc: {}
   },
   actions: {
-    // TODO: Figure out how to properly implement with vuex!
     async initAndWatchCol ({ commit, state }) {
       console.log(`watch ${state.colName} collection changes`)
       commit('setDocs', [])
@@ -35,8 +34,8 @@ export const fbaseColDocs = {
       if (snapshot.empty) {
         console.log('No matching documents.')
         return
-      }  
-      
+      }
+
       snapshot.forEach(doc => {
         console.log(doc.id, '=>', doc.data())
         commit('pushDoc', {
@@ -44,7 +43,7 @@ export const fbaseColDocs = {
           id: doc.id
         })
       })
-      
+
       commit('setLoading', false)
     },
     async retrieveAllDocs ({ commit, dispatch, state }) {
@@ -63,7 +62,6 @@ export const fbaseColDocs = {
           commit('setError', err)
         })
     },
-    // TODO: Needs testing
     async retrieveDocs ({ commit, dispatch, state }, payload) {
       console.log(`retrieve ${state.colName} collection documents`)
       commit('setLoading', true)
@@ -74,7 +72,7 @@ export const fbaseColDocs = {
 
       db.collection(state.colName).where(...filters).get()
         .then(snapshot => {
-          dispatch('runRetreiveDocsSnapshot', snapshot)          
+          dispatch('runRetreiveDocsSnapshot', snapshot)
         })
         .catch(err => {
           console.log(`error in documents retrieval: ${err}`)
@@ -105,7 +103,7 @@ export const fbaseColDocs = {
       console.log(`getting document with id ${id}`)
       commit('setLoading', true)
       commit('clearError')
-      
+
       db.collection(state.colName).doc(id).get()
         .then(doc => {
           if (doc.exists) {
@@ -134,7 +132,7 @@ export const fbaseColDocs = {
         .then(doc => {
           // commit('setDoc', doc.data())
           console.log(`${state.colName} document is updated: ${state.doc}`)
-  
+
           commit('setLoading', false)
         })
         .catch(err => {
