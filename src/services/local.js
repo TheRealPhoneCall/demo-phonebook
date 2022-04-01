@@ -2,7 +2,7 @@ import uuidv4 from 'uuid/v4'
 
 export const db = {
   // collection structure:
-  // { isCollection, docs: [] }
+  // { isCollection, name, docs: [] }
   collection: (colName) => ({
     get: () => {
       return new Promise(async (resolve, reject) => {
@@ -61,7 +61,7 @@ export const db = {
             }
           } else {
             // collection doesnt exist, create it
-            const value = JSON.stringify({ isCollection: true, docs: [ doc ] })
+            const value = JSON.stringify({ isCollection: true, name: colName, docs: [ doc ] })
             localStorage.setItem(colName, value)
             resolve(doc)
           }
