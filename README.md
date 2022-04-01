@@ -1,6 +1,6 @@
-# dashwerq (dashwerq-quasar)
+# myPhonebook (demo-phonebook)
 
-A platform builder for niche jobs
+Demo phonebook application
 
 ## Install the dependencies
 ```bash

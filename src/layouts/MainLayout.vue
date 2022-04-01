@@ -13,7 +13,7 @@
         </q-btn>
 
         <q-toolbar-title>
-          DashWerk
+          myPhonebook
         </q-toolbar-title>
 
         <q-space />
@@ -96,7 +96,7 @@
               Jobs
             </q-item-section>
           </q-item>
-          
+
         </q-list>
       </q-scroll-area>
 

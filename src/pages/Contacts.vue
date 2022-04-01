@@ -2,8 +2,8 @@
   <q-page class="flex" padding>
     <div class="row q-col-gutter-md">
       <div
-        v-for="contact in contacts"
-        :key="contact.id"
+        v-for="job in contacts"
+        :key="job.id"
         class="col-xs-12 col-sm-6 col-md-3"
 
       >
@@ -14,6 +14,20 @@
           </q-card-section>
 
           <q-separator dark inset />
+
+          <q-card-section>
+            <q-btn
+              icon="edit"
+              color="primary"
+              :to="`/contact/${contact.id}/edit`"
+            />
+            <q-btn
+              icon="delete"
+              color="negative"
+              flat
+              :to="`/contact/${contact.id}/delete`"
+            />
+          </q-card-section>
         </q-card>
       </div>
     </div>
@@ -33,16 +47,13 @@
 </template>
 
 <script>
-import {
-  mapActions,
-  mapGetters
-} from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'MainDashboard',
+  name: 'Contacts',
   data () {
     return {
-
+      formShow: false
     }
   },
   computed: {
@@ -56,3 +67,6 @@ export default {
   }
 }
 </script>
+
+<style>
+</style>

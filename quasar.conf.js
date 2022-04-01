@@ -70,7 +70,9 @@ module.exports = function (ctx) {
 
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'LocalStorage',
+        'SessionStorage'
       ]
     },
 
@@ -151,7 +153,7 @@ module.exports = function (ctx) {
     },
 
     cordova: {
-      id: 'org.cordova.quasar.app',
+      id: 'org.cordova.quasar.app'
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
     },
 

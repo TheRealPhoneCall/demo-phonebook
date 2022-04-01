@@ -8,13 +8,6 @@ const routes = [
     ]
   },
   {
-    path: '/page2',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/Page2.vue') }
-    ]
-  },
-  {
     path: '/sign-in',
     component: () => import('layouts/SplashLayout.vue'),
     children: [
@@ -29,38 +22,37 @@ const routes = [
     ]
   },
   {
-    path: '/jobs',
+    path: '/contacts',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Jobs.vue') },
-      { path: ':operation', props: true, component: () => import('pages/Job.vue') }
+      { path: '', component: () => import('pages/Contacts.vue') },
+      { path: ':operation', props: true, component: () => import('pages/Contact.vue') }
     ]
   },
   {
-    path: '/job/:id/',
-    name: 'job',
+    path: '/contact/:id/',
+    name: 'contact',
     props: true,
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: ':operation', props: true, component: () => import('pages/Job.vue') }
+      { path: ':operation', props: true, component: () => import('pages/Contact.vue') }
     ]
   },
-  // user centric operations
   {
-    path: '/adviser/orders',
+    path: '/contacts-new',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Jobs.vue') },
-      { path: ':operation', props: true, component: () => import('pages/Order.vue') }
+      { path: '', component: () => import('pages/Contacts.vue') },
+      { path: ':operation', props: true, component: () => import('pages/Contact.vue') }
     ]
   },
   {
-    path: '/adviser/order/:id/',
-    name: 'order',
+    path: '/contact-new/:id/',
+    name: 'contact-new',
     props: true,
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: ':operation', props: true, component: () => import('pages/Order.vue') }
+      { path: ':operation', props: true, component: () => import('pages/ContactNew.vue') }
     ]
   }
 ]
