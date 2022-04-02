@@ -29,7 +29,7 @@
             > -->
             <q-scroll-area
               class="q-pa-none"
-              :style="`height: 85vh; width: ${$q.screen.lt.sm? '90hw' : '30rem' };`"
+              :style="`height: 75vh; width: '90hw';`"
             >
               <q-intersection
                 v-for="contact in contacts"
@@ -67,7 +67,7 @@
         </q-card-section>
         <div
           v-if="!contactsCount"
-          class="row q-pa-md absolute-center text-center"
+          class="row q-pa-none absolute-center"
           style="font-size: 2rem"
         >
           <br/>
@@ -81,7 +81,7 @@
           <br/>
           <div
             class="text-weight-bold text-center"
-            style="min-height: 110vh"
+            style="min-height: 100vh"
           >Please add your first contact</div>
         </div>
       </q-card>

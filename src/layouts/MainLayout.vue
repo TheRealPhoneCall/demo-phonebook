@@ -16,34 +16,20 @@
           myPhonebook
         </q-toolbar-title>
 
-        <q-space />
-
-        <!-- <q-btn
-          flat
-          dense
-          v-if="userSignedIn"
-          to="/sign-in"
-          label="Sign In"
-        /> -->
-
-        <q-btn
-          flat
-          dense
-          @click="signOutAndExit()"
-          label="Sign Out"
-        />
-
       </q-toolbar>
     </q-header>
 
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <rv-footer />
   </q-layout>
 </template>
 
 <script>
 import { openURL } from 'quasar'
+import RvFooter from 'src/layouts/RvFooter'
 
 export default {
   name: 'MyLayout',
@@ -51,6 +37,9 @@ export default {
     return {
       drawer: this.$q.platform.is.desktop
     }
+  },
+  components: {
+    RvFooter
   },
   methods: {
     openURL
