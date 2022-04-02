@@ -1,35 +1,90 @@
 <template>
   <q-page class="flex" padding>
     <div class="row q-col-gutter-md">
-      <div
-        v-for="contact in contacts"
-        :key="contact.id"
-        class="col-xs-12 col-sm-6 col-md-3"
-
+      <q-card
+        :class="`q-pa-none`"
+        flat
       >
-        <q-card dark bordered class="bg-grey-9 my-card">
-          <q-card-section>
-            <div class="text-h6">{{ contact.firstName }}</div>
-            <div class="text-subtitle2">{{ contact.lastName }}</div>
+        <q-card-section
+          v-if="contactsCount"
+          class="q-pa-sm"
+        >
+          <div v-if="$q.screen.gt.xs" class="row">
+            <div
+              class="text-uppercase text-center text-weight-medium col"
+              style="font-size: 1.8rem"
+
+            >
+              Contacts
+            </div>
+            <q-space />
+          </div>
+
+          <q-card-section class="q-pa-none">
+            <!-- <q-scroll-area
+              class="q-pa-none"
+              style="height: 30rem; width: 30rem"
+              :key="notifsUID"
+              @scroll="onScroll"
+            > -->
+            <q-scroll-area
+              class="q-pa-none"
+              :style="`height: 85vh; width: ${$q.screen.lt.sm? '90hw' : '30rem' };`"
+            >
+              <q-intersection
+                v-for="contact in contacts"
+                :key="contact.id"
+                style="min-height: 2.5rem"
+              >
+                <q-item
+                  clickable
+                  :to="`/contact/${contact.id}/update`"
+                  style="border-bottom: solid 1px #dbdbdb"
+                  class="q-py-xs"
+                >
+                  <q-item-section>
+                    <q-item-label>{{ `${contact.firstName} ${contact.lastName}` }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-intersection>
+
+              <!-- <div v-if="notifsLoadingMore" class="flex flex-center">
+                <q-spinner-dots size="2rem" color="grey-10" />
+              </div> -->
+            </q-scroll-area>
+          </q-card-section>
+          <q-space />
+
+          <q-card-section class="q-py-sm text-center">
+            <div class="text-grey-8 text-weight-medium">
+              Showing {{ contactsCount }} contact{{ contactsCount > 1 ? 's' : '' }}
+              <!-- <span
+                v-if="!contactsEnd"
+              >. Show more contacts .</span> -->
+            </div>
           </q-card-section>
 
-          <q-separator dark inset />
-
-          <q-card-section>
-            <q-btn
-              icon="edit"
-              color="primary"
-              :to="`/contact/${contact.id}/edit`"
-            />
-            <q-btn
-              icon="delete"
-              color="negative"
-              flat
-              :to="`/contact/${contact.id}/delete`"
-            />
-          </q-card-section>
-        </q-card>
-      </div>
+        </q-card-section>
+        <div
+          v-if="!contactsCount"
+          class="row q-pa-md absolute-center text-center"
+          style="font-size: 2rem"
+        >
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <div
+            class="text-weight-bold text-center"
+            style="min-height: 110vh"
+          >Please add your first contact</div>
+        </div>
+      </q-card>
     </div>
     <q-inner-loading :showing="loading">
       <q-spinner-gears size="150px" color="primary" />
@@ -38,9 +93,10 @@
       <q-fab
         icon="add"
         direction="up"
-        color="accent"
+        color="primary"
+        to="/contacts/create"
       >
-        <q-fab-action to="/contacts/create" color="primary" icon="library_add" />
+        <!-- <q-fab-action to="/contacts/create" color="primary" icon="library_add" /> -->
       </q-fab>
     </q-page-sticky>
   </q-page>
@@ -57,7 +113,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('contacts', ['loading', 'error', 'contacts'])
+    ...mapGetters('contacts', ['loading', 'error', 'contacts', 'contactsCount'])
   },
   methods: {
     ...mapActions('contacts', ['retrieveAllContacts'])

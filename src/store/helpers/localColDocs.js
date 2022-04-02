@@ -57,7 +57,7 @@ export const localColDocs = {
 
       db.collection(colName).add(data)
         .then(doc => {
-          // commit('setDoc', doc.data())
+          commit('setDoc', doc)
           console.log(`${colName} document is created: ${state.doc}`)
           commit('setLoading', false)
         })
@@ -76,12 +76,13 @@ export const localColDocs = {
 
       db.collection(colName).doc(id).get()
         .then(doc => {
-          if (doc.exists) {
-            commit('setDoc', doc.data())
+          if (doc) {
+            commit('setDoc', doc)
             console.log('document is retrieved:', state.doc)
           }
           else {
             console.log('document not found.')
+            commit('setError', 'Document not found.')
           }
 
           commit('setLoading', false)
@@ -101,7 +102,7 @@ export const localColDocs = {
 
       db.collection(colName).doc(id).set(data)
         .then(doc => {
-          // commit('setDoc', doc.data())
+          commit('setDoc', doc)
           console.log(`${colName} document is updated: ${state.doc}`)
 
           commit('setLoading', false)
@@ -122,7 +123,6 @@ export const localColDocs = {
       db.collection(colName).doc(id).delete()
         .then(() => {
           console.log(`${colName} document is deleted: ${id}`)
-
           commit('setLoading', false)
         })
         .catch((err) => {

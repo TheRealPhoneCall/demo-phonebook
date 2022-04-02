@@ -25,7 +25,50 @@ export const db = {
     doc: (id) => ({
       set: (data) => {
         return new Promise(async (resolve, reject) => {
-
+          const collection = JSON.parse(localStorage.getItem(colName))
+          console.log('collection: ', collection)
+          if (collection && collection.isCollection) {
+            try {
+              let docIdx = collection.docs.findIndex(t => t.id === id)
+              if (docIdx > -1) {
+                collection.docs[docIdx] = data
+                const value = JSON.stringify(collection)
+                localStorage.setItem(colName, value)
+                resolve(data)
+              } else { reject('Document not found') }
+            } catch (e) {
+              reject(e)
+            }
+          } else { reject('Collection does not exist') }
+        })
+      },
+      get: () => {
+        return new Promise(async (resolve, reject) => {
+          const collection = JSON.parse(localStorage.getItem(colName))
+          console.log('collection: ', collection)
+          if (collection && collection.isCollection) {
+            try {
+              let doc = collection.docs.find(t => t.id === id)
+              if (doc) {
+                resolve(doc)
+              } else {
+                reject('Document not found')
+              }
+            } catch (e) { reject(e) }
+          } else { reject('Collection does not exist') }
+        })
+      },
+      delete: () => {
+        return new Promise(async (resolve, reject) => {
+          const collection = JSON.parse(localStorage.getItem(colName))
+          console.log('collection: ', collection)
+          if (collection && collection.isCollection) {
+            try {
+              const filteredDocs = collection.docs.filter(t => t.id !== id)
+              const value = JSON.stringify({ ...collection, docs: filteredDocs })
+              localStorage.setItem(colName, value)
+            } catch (e) { resolve(e) }
+          } else { reject('Collection does not exist') }
         })
       }
     }),
@@ -47,7 +90,7 @@ export const db = {
                   localStorage.setItem(colName, value)
                   resolve(doc)
                 } else {
-                  console.log('id already present in the collection')
+                  console.log('Setting new id for the document')
                   const newDoc = { id: uuidv4(), ...doc }
                   const value = JSON.stringify({ ...collection, docs: [ ...collection.docs, newDoc ] })
                   localStorage.setItem(colName, value)
@@ -61,7 +104,8 @@ export const db = {
             }
           } else {
             // collection doesnt exist, create it
-            const value = JSON.stringify({ isCollection: true, name: colName, docs: [ doc ] })
+            const newDoc = { id: uuidv4(), ...doc }
+            const value = JSON.stringify({ isCollection: true, name: colName, docs: [ newDoc ] })
             localStorage.setItem(colName, value)
             resolve(doc)
           }

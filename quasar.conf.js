@@ -60,7 +60,8 @@ module.exports = function (ctx) {
         'QForm',
         'QSpace',
         'QInput',
-        'QCheckbox'
+        'QCheckbox',
+        'QIntersection'
       ],
 
       directives: [

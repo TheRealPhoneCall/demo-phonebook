@@ -33,6 +33,9 @@ export default {
     },
     contacts (state) {
       return state.docs
+    },
+    contactsCount (state) {
+      return state.docs.length
     }
   }
 }
