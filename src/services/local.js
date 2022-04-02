@@ -18,7 +18,30 @@ export const db = {
     where: (...filters) => ({
       get: () => {
         return new Promise(async (resolve, reject) => {
-
+          const collection = JSON.parse(localStorage.getItem(colName))
+          console.log('collection: ', collection)
+          if (collection && collection.isCollection) {
+            try {
+              let filteredDocs = collection.docs
+              filters.forEach(arg => {
+                const [key, logic, val] = arg
+                filteredDocs = filteredDocs.filter(t => {
+                  switch (logic) {
+                    case '==': return t[key] === val
+                    case '!=': return t[key] !== val
+                    case '>=': return t[key] >= val
+                    case '>': return t[key] > val
+                    case '<': return t[key] < val
+                    case '<=': return t[key] <= val
+                    case 'in': return val.includes(t[key])
+                  }
+                })
+              })
+              resolve(filteredDocs)
+            } catch (e) { reject(e) }
+          } else {
+            reject('Collection not found')
+          }
         })
       }
     }),
