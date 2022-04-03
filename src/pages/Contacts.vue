@@ -17,6 +17,21 @@
           <q-space />
 
         </div>
+
+      </q-card-section>
+      <q-card-section class="col-12 q-pa-none">
+        <q-input
+          dense
+          rounded
+          outlined
+          debounce="300"
+          v-model="searchString"
+          placeholder="Search name or phonenumber"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
       </q-card-section>
 
       <q-card-section class="col-12 q-pa-none">
@@ -28,10 +43,10 @@
         > -->
         <q-scroll-area
           class="col-12 q-pa-none"
-          :style="`height: 65vh; width: '90hw';`"
+          :style="`height: 60vh; width: '90hw';`"
         >
           <q-intersection
-            v-for="contact in sortedContacts"
+            v-for="contact in filteredSortedContacts"
             :key="contact.id"
             style="min-height: 2.5rem"
           >
@@ -131,8 +146,9 @@ export default {
   data () {
     return {
       formShow: false,
-      sortBy: ['name', 'ASC'],
-      sortedContacts: []
+      sortBy: 'latest',
+      filteredSortedContacts: [],
+      searchString: ''
     }
   },
   components: { RvEmptyState },
@@ -145,13 +161,20 @@ export default {
     ]),
     ...mapMutations('contacts', ['sortDocs']),
     sortContacts (sortBy) {
-      this.sortedContacts = this.contacts.sort((a, b) => {
+      this.filteredSortedContacts = this.contacts.sort((a, b) => {
         switch (sortBy) {
           case 'name': return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`)
           case 'latest': return new Date(a.created) - new Date(b.created)
           case 'oldest': return new Date(b.created) - new Date(a.created)
           default: return Date(a.created) - new Date(b.created)
         }
+      })
+    },
+    filterContactsBySearch (searchString) {
+      this.filteredSortedContacts = this.contacts.filter(contact => {
+        return contact.firstName.toLowerCase().startsWith(searchString.toLowerCase()) ||
+          contact.lastName.toLowerCase().startsWith(searchString.toLowerCase()) ||
+          contact.phoneNumber.toLowerCase().startsWith(searchString.toLowerCase())
       })
     }
   },
@@ -161,6 +184,9 @@ export default {
         this.sortContacts(value)
       },
       immediate: true
+    },
+    searchString (value) {
+      this.filterContactsBySearch(value)
     }
   },
   async created () {
