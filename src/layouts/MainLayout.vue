@@ -1,23 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          @click="drawer = !drawer"
-          aria-label="Menu"
-        >
-          <q-icon name="menu" />
-        </q-btn>
-
-        <q-toolbar-title>
-          myPhonebook
-        </q-toolbar-title>
-
-      </q-toolbar>
-    </q-header>
+    <rv-header />
 
     <q-page-container>
       <router-view />
@@ -30,6 +13,7 @@
 <script>
 import { openURL } from 'quasar'
 import RvFooter from 'src/layouts/RvFooter'
+import RvHeader from 'src/layouts/RvHeader'
 
 export default {
   name: 'MyLayout',
@@ -39,7 +23,8 @@ export default {
     }
   },
   components: {
-    RvFooter
+    RvFooter,
+    RvHeader
   },
   methods: {
     openURL

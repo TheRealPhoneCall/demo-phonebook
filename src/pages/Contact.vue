@@ -80,7 +80,8 @@ export default {
   name: 'Contact',
   data () {
     return {
-      acceptDelete: false
+      acceptDelete: false,
+      formOperation: 'create'
     }
   },
   props: ['id', 'operation'],
@@ -180,8 +181,8 @@ export default {
       }
     }
   },
-  created () {
-    console.log(this.$route.path, this.operation, this.id)
+  async created () {
+    console.log(this.$route.path, this.$route.name, this.operation, this.id)
 
     switch (this.operation) {
       case 'create':
@@ -191,7 +192,7 @@ export default {
       case 'edit':
       case 'delete':
         console.log('edit/delete mode')
-        this.retrieveDoc(this.id)
+        await this.retrieveDoc(this.id)
         break
     }
 

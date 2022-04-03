@@ -1,24 +1,16 @@
-
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Main.vue') }
+      { path: '', component: () => import('pages/Contact.vue') }
     ]
   },
   {
-    path: '/sign-in',
-    component: () => import('layouts/SplashLayout.vue'),
+    path: '/favorites',
+    component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/users/SignIn.vue') }
-    ]
-  },
-  {
-    path: '/sign-up',
-    component: () => import('layouts/SplashLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/users/SignUp.vue') }
+      { path: '', name: 'favorites', component: () => import('pages/Contacts.vue') }
     ]
   },
   {
@@ -26,6 +18,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Contacts.vue') },
+      // for contact create
       { path: ':operation', props: true, component: () => import('pages/Contact.vue') }
     ]
   },
@@ -35,15 +28,15 @@ const routes = [
     props: true,
     component: () => import('layouts/MainLayout.vue'),
     children: [
+      // for contact update and delete
       { path: ':operation', props: true, component: () => import('pages/Contact.vue') }
     ]
   },
   {
-    path: '/contacts-new',
+    path: '/recents',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Contacts.vue') },
-      { path: ':operation', props: true, component: () => import('pages/Contact.vue') }
+      { path: '', name: 'recent', component: () => import('pages/Contacts.vue') }
     ]
   },
   {

@@ -20,6 +20,30 @@ export default {
     },
     retrieveAllContacts ({ commit, dispatch }) {
       dispatch('retrieveAllDocs')
+    },
+    async retrieveFavorites ({ commit, dispatch }) {
+      await dispatch('retrieveDocs', {
+        filterArgs: [
+          ['isFavorite', '==', true]
+        ]
+      }).then(() => {
+
+      })
+    },
+    async retrieveRecents ({ commit, dispatch }) {
+      await dispatch('retrieveDocs').then(() => {
+        commit('sortDocs', ['created', 'asc'])
+      })
+    },
+    async toggleContactFavorite ({ commit, dispatch }, payload) {
+      const contact = payload
+      await dispatch('updateDoc', {
+        id: contact.id,
+        data: {
+          ...contact,
+          isFavorite: !contact.isFavorite
+        }
+      })
     }
   },
   mutations: {
@@ -36,6 +60,16 @@ export default {
     },
     contactsCount (state) {
       return state.docs.length
+    },
+    sortedContacts: (state) => (sortArg) => {
+      const [field, order] = sortArg
+      return state.docs.sort((a, b) => {
+        if (order === 'asc') {
+          return a[field] - b[field]
+        } else {
+          return b[field] - a[field]
+        }
+      })
     }
   }
 }

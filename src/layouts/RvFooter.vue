@@ -1,7 +1,8 @@
 <template>
   <q-footer
     elevated
-    class="bg-grey-8 text-white"
+    class="text-white"
+    color="secondary"
   >
     <q-toolbar class="fit q-pa-none">
       <div class="fit row wrap justify-center">
@@ -20,7 +21,7 @@
               v-for="tab in tabs"
               :key="`tab-${tab.name}`"
               no-caps
-              class="col q-pt-xs"
+              class="col q-pt-xs text-center"
               :name="tab.name"
               :label="tab.label"
               :tooltip="tab.tooltip"
@@ -41,9 +42,9 @@ export default {
     return {
       footerTab: 'contacts',
       tabs: [
-        { name: 'favorites', label: 'Favorites', tooltip: 'Favorites', icon: 'favorites' },
-        { name: 'contacts', label: 'Contacts', tooltip: 'Contacts', icon: 'fas fa-users' },
-        { name: 'recents', label: 'Recents', tooltip: 'Recents', icon: 'fas fa-clock' }
+        { name: 'favorites', label: 'Favorites', tooltip: 'Favorites', icon: 'favorite' },
+        { name: 'contacts', label: 'Contacts', tooltip: 'Contacts', icon: 'person' },
+        { name: 'recents', label: 'Recents', tooltip: 'Recents', icon: 'watch_later' }
       ]
     }
   },

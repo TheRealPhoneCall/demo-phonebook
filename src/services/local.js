@@ -105,7 +105,7 @@ export const db = {
             try {
               if (typeof doc === 'object' && !Array.isArray(doc) && doc !== null) {
                 // check if id is supplied
-                if (doc.id !== null) {
+                if (doc.id) {
                   if (collection.docs.find(t => t.id === doc.id)) {
                     reject('ID already present in the collection')
                   }
