@@ -17,7 +17,7 @@ const routes = [
     path: '/contacts',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Contacts.vue') },
+      { path: '', name: 'contacts', component: () => import('pages/Contacts.vue') },
       // for contact create
       { path: ':operation', props: true, component: () => import('pages/Contact.vue') }
     ]

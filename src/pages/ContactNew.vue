@@ -11,6 +11,30 @@
           <q-space />
         </q-card-section>
 
+        <div class="row q-pa-md">
+          <div class="col text-center">
+            <q-icon
+              name="account_circle"
+              size="4rem"
+            />
+            <div class="text-center text-caption text-bold">
+              {{ firstName }} {{ lastName }}
+
+            </div>
+            <br />
+            <div class="text-center text-caption text-bold">
+              <q-rating
+                size="1.5em"
+                readonly
+                :value="doc.rating || 0"
+                icon="star_border"
+                icon-selected="star"
+                color="primary"
+              />
+            </div>
+          </div>
+        </div>
+
         <q-card-section>
           <q-input
             filled

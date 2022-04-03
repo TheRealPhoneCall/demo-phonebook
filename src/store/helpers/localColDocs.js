@@ -140,6 +140,17 @@ export const localColDocs = {
     setDocs (state, payload) {
       state.docs = payload
     },
+    sortDocs (state, payload) {
+      const [field, order] = payload
+      console.log(field, order)
+      state.docs = state.docs.sort((a, b) => {
+        if (order === 'ASC') {
+          return a[field] - b[field]
+        } else {
+          return b[field] - a[field]
+        }
+      })
+    },
     setDoc (state, payload) {
       state.doc = payload
     },

@@ -61,9 +61,9 @@ export default {
     contactsCount (state) {
       return state.docs.length
     },
-
-    sortedContacts: (state) => (sortArg) => {
-      const [field, order] = sortArg
+    sortedContacts: (state) => (sortBy) => {
+      const [field, order] = sortBy
+      console.log(field, order)
       return state.docs.sort((a, b) => {
         if (order === 'ASC') {
           return a[field] - b[field]
