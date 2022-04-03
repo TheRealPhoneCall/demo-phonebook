@@ -44,51 +44,55 @@
         <q-scroll-area
           class="col-12 q-pa-none"
           :style="`height: 60vh; width: '90hw';`"
+          ref="scrollArea"
+          @scroll="onScroll"
         >
-          <q-intersection
-            v-for="contact in filteredSortedContacts"
-            :key="contact.id"
-            style="min-height: 2.5rem"
-          >
-            <q-slide-item left-color="warning">
-              <template v-slot:right>
-                <q-btn
-                  flat
-                  label="Delete"
-                  :to="`/contact/${contact.id}/delete`"
-                />
-              </template>
-              <q-item
-                clickable
-                :to="`/contact/${contact.id}/edit`"
-                style="border-bottom: solid 1px #dbdbdb"
-                class="q-py-xs"
-              >
-                <q-item-section>
-                  <q-item-label>{{ `${contact.firstName} ${contact.lastName}` }}</q-item-label>
-                </q-item-section>
-                <q-item-section side>
+          <q-infinite-scroll @load="loadMoreContacts" :offset="50">
+            <q-intersection
+              v-for="contact in filteredSortedContacts.slice(0,
+                contactsCount < countIncrements ? contactsCount : paginatedCount
+              )"
+              :key="contact.id"
+              style="min-height: 2.5rem"
+            >
+              <q-slide-item left-color="warning">
+                <template v-slot:right>
                   <q-btn
                     flat
-                    :icon="contact.isFavorite ? 'favorite' : 'favorite_outline'"
-                    @click="toggleContactFavorite(contact)"
+                    label="Delete"
+                    :to="`/contact/${contact.id}/delete`"
                   />
-                </q-item-section>
-              </q-item>
-            </q-slide-item>
-          </q-intersection>
+                </template>
+                <q-item
+                  style="border-bottom: solid 1px #dbdbdb"
+                  class="q-py-xs"
+                >
+                  <q-item-section :to="`/contact/${contact.id}/edit`">
+                    <q-item-label>{{ `${contact.firstName} ${contact.lastName}` }}</q-item-label>
+                  </q-item-section>
+                  <q-item-section side>
+                    <q-btn
+                      flat
+                      :icon="contact.isFavorite ? 'favorite' : 'favorite_outline'"
+                      @click="toggleContactFavorite(contact); contact.isFavorite = !contact.isFavorite"
+                    />
+                  </q-item-section>
+                </q-item>
+              </q-slide-item>
 
-          <!-- <div v-if="notifsLoadingMore" class="flex flex-center">
-            <q-spinner-dots size="2rem" color="grey-10" />
-          </div> -->
+            </q-intersection>
+          </q-infinite-scroll>
         </q-scroll-area>
       </q-card-section>
 
       <q-space />
 
       <q-card-section class="q-py-sm text-center col-12">
+        <div v-if="contactsLoadingMore" class="flex flex-center">
+          <q-spinner-dots size="2rem" color="grey-10" />
+        </div>
         <div class="text-grey-8 text-weight-medium">
-          Showing {{ contactsCount }} contact{{ contactsCount > 1 ? 's' : '' }}
+          Showing {{ paginatedCount }} contact{{ paginatedCount > 1 ? 's' : '' }}
           <!-- <span
             v-if="!contactsEnd"
           >. Show more contacts .</span> -->
@@ -148,6 +152,9 @@ export default {
       formShow: false,
       sortBy: 'latest',
       filteredSortedContacts: [],
+      paginatedCount: 0,
+      countIncrements: 10,
+      contactsLoadingMore: false,
       searchString: ''
     }
   },
@@ -160,6 +167,23 @@ export default {
       'retrieveAllContacts', 'retrieveFavorites', 'toggleContactFavorite'
     ]),
     ...mapMutations('contacts', ['sortDocs']),
+    async onToggleContactFavorite () {
+      await this.toggleContactFavorite()
+      await this.initContacts()
+    },
+    async initContacts () {
+      switch (this.$route.name) {
+        case 'favorites': await this.retrieveFavorites(); break
+        case 'recents': {
+          await this.retrieveAllContacts().then(() => {
+            this.sortBy = 'latest'
+          })
+          break
+        }
+        default: await this.retrieveAllContacts(); break
+      }
+      this.sortContacts(this.sortBy)
+    },
     sortContacts (sortBy) {
       this.filteredSortedContacts = this.contacts.sort((a, b) => {
         switch (sortBy) {
@@ -176,30 +200,41 @@ export default {
           contact.lastName.toLowerCase().startsWith(searchString.toLowerCase()) ||
           contact.phoneNumber.toLowerCase().startsWith(searchString.toLowerCase())
       })
+    },
+    onScroll ({ verticalPercentage }) {
+      if (verticalPercentage >= 0.95 && this.paginatedCount < this.contactsCount) {
+        this.contactsLoadingMore = true
+        setTimeout(() => {
+          console.log(verticalPercentage)
+          this.loadMoreContacts()
+          this.contactsLoadingMore = false
+        }, 500)
+      }
+    },
+    loadMoreContacts () {
+      console.log('loading more contacts...')
+      if (this.contactsCount <= this.countIncrements) {
+        this.paginatedCount = this.contactsCount
+      } else if (this.paginatedCount + this.countIncrements < this.contactsCount) {
+        this.paginatedCount += this.countIncrements
+      } else if (this.paginatedCount + this.countIncrements >= this.contactsCount) {
+        this.paginatedCount = this.contactsCount
+      }
     }
   },
   watch: {
     sortBy: {
       handler (value) {
         this.sortContacts(value)
-      },
-      immediate: true
+      }
+      // immediate: true
     },
     searchString (value) {
       this.filterContactsBySearch(value)
     }
   },
   async created () {
-    switch (this.$route.name) {
-      case 'favorites': await this.retrieveFavorites(); break
-      case 'recents': {
-        await this.retrieveAllContacts().then(() => {
-          this.sortBy = ['created', 'ASC']
-        })
-        break
-      }
-      default: await this.retrieveAllContacts(); break
-    }
+    await this.initContacts()
   }
 }
 </script>

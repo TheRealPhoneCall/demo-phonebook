@@ -54,6 +54,7 @@ module.exports = function (ctx) {
         'QScrollArea',
         'QCard',
         'QCardSection',
+        'QInfiniteScroll',
         'QInnerLoading',
         'QSpinnerDots',
         'QFab',

@@ -71,10 +71,11 @@
             label="Phone number"
             lazy-rules
             :rules="[
-              val => val !== null && val !== '' || 'Please type the phone number',
-              val => checkIfExists(val) || 'Phone number already exists in your phonebook.'
+              val => val !== null && val !== '' || 'Please type the phone number'
+
             ]"
           />
+          <!-- val => checkIfExists(val) || 'Phone number already exists in your phonebook.' -->
 
           <div v-show="operation === 'delete'" >
             <div class="text-body1">
@@ -85,6 +86,9 @@
               label="Accept delete"
               color="negative"
             />
+          </div>
+          <div v-show="error || formError" class="text-bold text-negative">
+            {{ error || formError }}
           </div>
 
         </q-card-section>
@@ -111,6 +115,8 @@ import {
   mapMutations
 } from 'vuex'
 
+import libphonenumber from 'google-libphonenumber'
+
 import { setTimeout } from 'timers'
 
 export default {
@@ -118,12 +124,13 @@ export default {
   data () {
     return {
       acceptDelete: false,
-      formOperation: 'create'
+      formOperation: 'create',
+      formError: ''
     }
   },
   props: ['id', 'operation'],
   computed: {
-    ...mapGetters('contacts', ['loading', 'error', 'contact']),
+    ...mapGetters('contacts', ['loading', 'error', 'contact', 'contacts']),
     operationText () {
       switch (this.operation) {
         case 'create':
@@ -183,13 +190,38 @@ export default {
     }
   },
   methods: {
-    ...mapActions('contacts', ['createDoc', 'retrieveDoc', 'updateDoc', 'deleteDoc', 'toggleContactFavorite']),
+    ...mapActions('contacts', [
+      'createDoc', 'retrieveDoc', 'updateDoc', 'deleteDoc', 'toggleContactFavorite', 'retrieveAllContacts'
+    ]),
     ...mapMutations('contacts', ['setDoc', 'setLoading']),
-    isNumberExists (number) {
-      this.contacts.find(contact => contact.number === number)
+    isNumberExists (phoneNumber) {
+      return this.contacts.find(contact => contact.phoneNumber === phoneNumber)
+    },
+    isNumberFormatValid (phoneNumber) {
+      const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance()
+      try {
+        const validity = phoneUtil.isValidNumber(phoneUtil.parse(phoneNumber))
+        console.log('phonenumber E.164 validity', validity)
+        return validity
+      } catch (err) {
+        this.formError = err
+      }
     },
     async onSubmit () {
       console.log(`Submitting contact: `, this.contact)
+
+      // check if number already exists
+      if (this.operation === 'create' && this.isNumberExists(this.phoneNumber)) {
+        console.log('Number already exists, submit prevented.')
+        this.formError = 'Number already exists in your phonebook. Must be unique.'
+        return
+      }
+
+      // validate phone via E.164 format
+      if (this.operation === 'create' && !this.isNumberFormatValid(this.phoneNumber)) {
+        console.log('Not a valid phone number..')
+        return
+      }
 
       const payload = {
         id: this.id,
@@ -215,6 +247,7 @@ export default {
             break
         }
 
+        await this.retrieveAllContacts()
         setTimeout(() => {
           this.$router.push('/contacts')
         }, 1000)

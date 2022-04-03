@@ -16,6 +16,7 @@
     "firebase": "^6.3.1",
     "firebase-app": "^0.0.1",
     "firebase-auth": "^0.1.2",
+    "google-libphonenumber": "^3.2.27",
     "quasar": "^1.14.3",
     "vue-i18n": "^8.0.0"
   },
