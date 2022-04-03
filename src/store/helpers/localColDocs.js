@@ -36,11 +36,12 @@ export const localColDocs = {
       commit('clearError')
       commit('setDocs', [])
 
-      const { ...filters } = payload
+      const { filters } = payload
 
       db.collection(colName).where(...filters).get()
         .then(docs => {
           commit('setDocs', docs)
+          commit('setLoading', false)
         })
         .catch(err => {
           console.log(`error in documents retrieval: ${err}`)

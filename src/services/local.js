@@ -23,6 +23,7 @@ export const db = {
           if (collection && collection.isCollection) {
             try {
               let filteredDocs = collection.docs
+              console.log('where filters', filters)
               filters.forEach(arg => {
                 const [key, logic, val] = arg
                 filteredDocs = filteredDocs.filter(t => {
@@ -37,6 +38,7 @@ export const db = {
                   }
                 })
               })
+              console.log('filtered docs', filteredDocs)
               resolve(filteredDocs)
             } catch (e) { reject(e) }
           } else {

@@ -3,7 +3,7 @@
     <rv-header />
 
     <q-page-container>
-      <router-view />
+      <router-view :key="$route.fullPath" />
     </q-page-container>
 
     <rv-footer />

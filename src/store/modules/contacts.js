@@ -23,7 +23,7 @@ export default {
     },
     async retrieveFavorites ({ commit, dispatch }) {
       await dispatch('retrieveDocs', {
-        filterArgs: [
+        filters: [
           ['isFavorite', '==', true]
         ]
       }).then(() => {
@@ -61,10 +61,11 @@ export default {
     contactsCount (state) {
       return state.docs.length
     },
+
     sortedContacts: (state) => (sortArg) => {
       const [field, order] = sortArg
       return state.docs.sort((a, b) => {
-        if (order === 'asc') {
+        if (order === 'ASC') {
           return a[field] - b[field]
         } else {
           return b[field] - a[field]
