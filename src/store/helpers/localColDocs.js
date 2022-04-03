@@ -49,6 +49,25 @@ export const localColDocs = {
           commit('setError', err)
         })
     },
+    async checkIfExists ({ commit, dispatch, state }, payload) {
+      const { colName } = state.naming
+      console.log(`checking ${colName} if document exists`)
+      commit('setLoading', true)
+
+      const { filters } = payload
+      let doc = {}
+      await db.collection(colName).where(...filters).get()
+        .then(docs => {
+          doc = docs[0]
+          commit('setLoading', false)
+        })
+        .catch(err => {
+          console.log(`error in documents retrieval: ${err}`)
+          commit('setLoading', false)
+          commit('setError', err)
+        })
+      return doc !== null
+    },
     async createDoc ({ commit, state }, payload) {
       const { colName } = state.naming
       const { data } = payload

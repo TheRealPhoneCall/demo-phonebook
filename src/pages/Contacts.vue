@@ -164,8 +164,8 @@ export default {
       this.filteredSortedContacts = this.contacts.sort((a, b) => {
         switch (sortBy) {
           case 'name': return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`)
-          case 'latest': return new Date(a.created) - new Date(b.created)
-          case 'oldest': return new Date(b.created) - new Date(a.created)
+          case 'latest': return new Date(b.created) - new Date(a.created)
+          case 'oldest': return new Date(a.created) - new Date(b.created)
           default: return Date(a.created) - new Date(b.created)
         }
       })

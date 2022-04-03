@@ -21,7 +21,7 @@
               {{ firstName }} {{ lastName }}
             </div>
             <div
-              v-if="operation !== 'delete'"
+              v-if="operation === 'edit'"
               class="fit row wrap justify-between items-start items-center content-start q-px-md q-pt-md q-gutter-xs"
             >
               <q-btn
@@ -70,7 +70,10 @@
             debounce="500"
             label="Phone number"
             lazy-rules
-            :rules="[ val => val !== null && val !== '' || 'Please type the phone number']"
+            :rules="[
+              val => val !== null && val !== '' || 'Please type the phone number',
+              val => checkIfExists(val) || 'Phone number already exists in your phonebook.'
+            ]"
           />
 
           <div v-show="operation === 'delete'" >
@@ -182,6 +185,9 @@ export default {
   methods: {
     ...mapActions('contacts', ['createDoc', 'retrieveDoc', 'updateDoc', 'deleteDoc', 'toggleContactFavorite']),
     ...mapMutations('contacts', ['setDoc', 'setLoading']),
+    isNumberExists (number) {
+      this.contacts.find(contact => contact.number === number)
+    },
     async onSubmit () {
       console.log(`Submitting contact: `, this.contact)
 
