@@ -31,7 +31,7 @@
           :style="`height: 65vh; width: '90hw';`"
         >
           <q-intersection
-            v-for="contact in contacts"
+            v-for="contact in sortedContacts"
             :key="contact.id"
             style="min-height: 2.5rem"
           >
@@ -89,9 +89,9 @@
           toggle-color="secondary"
           class="items-center"
           :options="[
-            { label: 'name', value: ['firstName', 'ASC'] },
-            { label: 'latest', value: ['created', 'DESC'] },
-            { label: 'oldest', value: ['created', 'ASC'] },
+            { label: 'name', value: 'name' },
+            { label: 'latest', value: 'latest' },
+            { label: 'oldest', value: 'oldest' },
           ]"
         />
       </q-card-section>
@@ -131,24 +131,36 @@ export default {
   data () {
     return {
       formShow: false,
-      sortBy: ['firstName', 'ASC']
+      sortBy: ['name', 'ASC'],
+      sortedContacts: []
     }
   },
   components: { RvEmptyState },
   computed: {
-    ...mapGetters('contacts', ['loading', 'error', 'sortedContacts', 'contacts', 'contactsCount'])
+    ...mapGetters('contacts', ['loading', 'error', 'contacts', 'contactsCount'])
   },
   methods: {
     ...mapActions('contacts', [
       'retrieveAllContacts', 'retrieveFavorites', 'toggleContactFavorite'
     ]),
-    ...mapMutations('contacts', ['sortDocs'])
+    ...mapMutations('contacts', ['sortDocs']),
+    sortContacts (sortBy) {
+      this.sortedContacts = this.contacts.sort((a, b) => {
+        switch (sortBy) {
+          case 'name': return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`)
+          case 'latest': return new Date(a.created) - new Date(b.created)
+          case 'oldest': return new Date(b.created) - new Date(a.created)
+          default: return Date(a.created) - new Date(b.created)
+        }
+      })
+    }
   },
   watch: {
     sortBy: {
       handler (value) {
-        this.sortDocs(value)
-      }
+        this.sortContacts(value)
+      },
+      immediate: true
     }
   },
   async created () {

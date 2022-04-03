@@ -20,10 +20,21 @@
             <div class="text-center text-bold text-h6">
               {{ firstName }} {{ lastName }}
             </div>
-            <div v-if="operation !== 'delete'" class="fit row wrap justify-between items-start items-center content-start q-px-md q-pt-md q-gutter-xs">
-              <q-btn outline color="secondary" rounded no-caps disable label="Message" size="md" class="col text-center" stack icon="chat_bubble" />
-              <q-btn outline color="secondary" rounded no-caps disable label="Call" size="md" class="col text-center" stack icon="call" />
-              <q-btn outline color="secondary" rounded no-caps disable label="Video" size="md" class="col text-center" stack icon="video_call" />
+            <div
+              v-if="operation !== 'delete'"
+              class="fit row wrap justify-between items-start items-center content-start q-px-md q-pt-md q-gutter-xs"
+            >
+              <q-btn
+                outline color="secondary" rounded no-caps disable label="Message" size="md"
+                class="col text-center" stack icon="chat_bubble"
+              />
+              <q-btn
+                outline color="secondary" rounded no-caps disable label="Call" size="md"
+                class="col text-center" stack icon="call"
+              />
+              <q-btn
+                outline color="secondary" rounded no-caps disable label="Video" size="md"
+                class="col text-center" stack icon="video_call" />
               <q-btn
                 rounded color="secondary" no-caps size="md" class="col text-center" stack
                 :label="isFavorite ?  'Unfavorite' : 'Favorite'"

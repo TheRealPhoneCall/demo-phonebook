@@ -150,6 +150,7 @@ export const localColDocs = {
           return b[field] - a[field]
         }
       })
+      console.log(state.docs)
     },
     setDoc (state, payload) {
       state.doc = payload
