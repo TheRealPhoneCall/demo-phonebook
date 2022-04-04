@@ -66,8 +66,9 @@
                 <q-item
                   style="border-bottom: solid 1px #dbdbdb"
                   class="q-py-xs"
+
                 >
-                  <q-item-section :to="`/contact/${contact.id}/edit`">
+                  <q-item-section @click="$router.push(`/contact/${contact.id}/edit`)">
                     <q-item-label>{{ `${contact.firstName} ${contact.lastName}` }}</q-item-label>
                   </q-item-section>
                   <q-item-section side>
