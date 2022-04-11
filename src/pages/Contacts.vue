@@ -35,12 +35,6 @@
       </q-card-section>
 
       <q-card-section class="col-12 q-pa-none">
-        <!-- <q-scroll-area
-          class="q-pa-none"
-          style="height: 30rem; width: 30rem"
-          :key="notifsUID"
-          @scroll="onScroll"
-        > -->
         <q-scroll-area
           class="col-12 q-pa-none"
           :style="`height: 60vh; width: '90hw';`"
@@ -94,9 +88,6 @@
         </div>
         <div class="text-grey-8 text-weight-medium">
           Showing {{ paginatedCount }} contact{{ paginatedCount > 1 ? 's' : '' }}
-          <!-- <span
-            v-if="!contactsEnd"
-          >. Show more contacts .</span> -->
         </div>
         <q-btn-toggle
           v-model="sortBy"
@@ -143,7 +134,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import RvEmptyState from 'src/components/misc/RvEmptyState'
 
 export default {
@@ -167,7 +158,6 @@ export default {
     ...mapActions('contacts', [
       'retrieveAllContacts', 'retrieveFavorites', 'toggleContactFavorite'
     ]),
-    ...mapMutations('contacts', ['sortDocs']),
     async onToggleContactFavorite () {
       await this.toggleContactFavorite()
       await this.initContacts()
@@ -214,11 +204,9 @@ export default {
     },
     loadMoreContacts () {
       console.log('loading more contacts...')
-      if (this.contactsCount <= this.countIncrements) {
-        this.paginatedCount = this.contactsCount
-      } else if (this.paginatedCount + this.countIncrements < this.contactsCount) {
+      if (this.paginatedCount + this.countIncrements <= this.contactsCount) {
         this.paginatedCount += this.countIncrements
-      } else if (this.paginatedCount + this.countIncrements >= this.contactsCount) {
+      } else {
         this.paginatedCount = this.contactsCount
       }
     }

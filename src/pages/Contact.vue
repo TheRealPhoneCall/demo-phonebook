@@ -124,7 +124,6 @@ export default {
   data () {
     return {
       acceptDelete: false,
-      formOperation: 'create',
       formError: ''
     }
   },
@@ -255,7 +254,7 @@ export default {
     }
   },
   async created () {
-    console.log(this.$route.path, this.$route.name, this.operation, this.id)
+    // console.log(this.$route.path, this.$route.name, this.operation, this.id)
 
     switch (this.operation) {
       case 'create':
@@ -269,7 +268,7 @@ export default {
         break
     }
 
-    console.log('@created contact =', this.contact)
+    // console.log('@created contact =', this.contact)
   }
 }
 </script>

@@ -1,0 +1,31 @@
+import { mount, createLocalVue } from '@vue/test-utils'
+import App from 'src/App.vue'
+import VueRouter from 'vue-router'
+import routes from 'src/router/routes'
+import * as All from 'quasar'
+
+const { Quasar } = All
+
+const components = Object.keys(All).reduce((object, key) => {
+  const val = All[key]
+  if (val && val.component && val.component.name != null) {
+    object[key] = val
+  }
+  return object
+}, {})
+
+describe('Mount Main App', () => {
+  const localVue = createLocalVue()
+  localVue.use(Quasar, { components }) // , lang: langEn
+  localVue.use(VueRouter)
+  const router = new VueRouter({ routes })
+
+  const wrapper = mount(App, { localVue, router })
+  const vm = wrapper.vm
+  console.info(vm)
+
+  it('name has to be App', () => {
+    expect(typeof vm.$options.name).toBe('string')
+    expect(vm.$options.name).toBe('App')
+  })
+})
