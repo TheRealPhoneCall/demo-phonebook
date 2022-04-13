@@ -56,10 +56,11 @@ export const db = {
             try {
               let docIdx = collection.docs.findIndex(t => t.id === id)
               if (docIdx > -1) {
-                collection.docs[docIdx] = data
+                const updatedData = { ...collection.docs[docIdx], ...data }
+                collection.docs[docIdx] = updatedData
                 const value = JSON.stringify(collection)
                 localStorage.setItem(colName, value)
-                resolve(data)
+                resolve(updatedData)
               } else { reject('Document not found') }
             } catch (e) {
               reject(e)
@@ -111,6 +112,7 @@ export const db = {
                   if (collection.docs.find(t => t.id === doc.id)) {
                     reject('ID already present in the collection')
                   }
+                  console.log('doc added with id', doc)
                   const value = JSON.stringify({ ...collection, docs: [ ...collection.docs, doc ] })
                   localStorage.setItem(colName, value)
                   resolve(doc)
